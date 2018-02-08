@@ -1,0 +1,63 @@
+{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{%static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{%static 'site/style.css' %}">
+    <script src='{% static "site/js/site.js" %}'></script> <!-- File is small, so I don't have to put it in the end-->
+    <title>
+        {% block title %}
+        Places
+        {% endblock %}
+    </title>
+</head>
+
+<body>
+
+    {% block navbar %}
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'home' %}">Places</a>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          {% if city %}
+            <li class='nav-item'><a class='nav-link' href='#'>{{city.name}}</a></li>
+          {% endif %}
+        </ul>
+        <form class="form-inline mt-2 mt-md-0" method="get" action="{% url 'search' %}" >
+          {{search_form.query}}
+          <input type="submit" name="search" class="btn btn-success submit">
+        </form>
+      </div>
+    </nav>
+{% endblock navbar %}
+
+
+{% block content %}
+    <p>Use this template to produce new templates for you site</p>
+    
+{% endblock content%}
+
+{% block footer %}
+      <footer class="footer bg-dark">
+      <div class="container">
+        <span class="text-muted">For wesite issues contact us: <a href='mailto:giller.heitem@hotmail.com'>Admin</a></span>
+      </div>
+    </footer>
+{% endblock footer %}
+<script src="{%static 'jquery/jquery.js' %}">
+</script>
+<script src="{%static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

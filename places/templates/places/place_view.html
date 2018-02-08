@@ -1,0 +1,72 @@
+{% extends '_base.html' %}
+{% load staticfiles %}
+{% block title %}
+Places:{{place.name}}
+{% endblock title %}
+
+{% block content %}
+<div class='container place-cont'>
+	<div class='row place-container'>
+		<div class='col-sm-7'>
+			<div class='row art-row'>
+				<div id='article'><h3>{{place.name}}</h3>
+					<p>{{place.address}}</p>
+					<p class='lead' id='desc'>{{place.description}}</p>
+				</div>
+				<div id='map'></div>
+			</div>
+		</div>
+		<div class='col-sm-5 additional'>
+			<div class='row contacts'>
+				<div id='contacts' class='box'><h4>Contacts</h4>
+					<ul class='contacts-list'>
+						<li class='contact'>Web Site: {{place.web_site_link|urlize}}</li>
+						{% if phones %}
+							<li class='contact'>Phones: 
+							{% for phone in phones%}
+								<p>{{phone}}</p>
+							{% endfor %}</li>
+						{% endif %}
+					</ul></div>
+			</div>
+			<div class='row'>
+				<div id='schedule' class='box'>
+					<h4 class="add-h">Schedule</h4>
+					{% if schedule %}
+						{% if opened  %}
+							<p class='text-success'>Opened now</p>
+						{% else %}
+							<p class='text-danger'>Closed</p>
+						{% endif %}
+					{% else %}
+					<p>Schedule hasn't been added yet</p>
+					{% endif %}
+					<ul class='schedule-days'>
+						{% for day in schedule %}
+							<li>{{day|first|capfirst}}: {{day|last}}</li>
+						{% endfor %}
+					</ul>
+					
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script>
+function initMap() {
+	var uluru = {lat: {{place.lat}}, lng: {{place.lng}}};
+	var map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 4,
+		center: uluru
+	});
+	var marker = new google.maps.Marker({
+		position: uluru,
+		map: map
+	});
+}
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9jtEkQbMOKqxGHVyBB1RkLox8almUZI&callback=initMap">
+</script>
+{% endblock content %}

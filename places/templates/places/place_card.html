@@ -1,0 +1,15 @@
+<div class="card place-card">
+	<div class="card-block">
+		<a href="{% url 'places:place' place.city.slug place.id %}"<h3 class='card-title'>{{place.name}}</h3></a>
+		<p class='card-subtitle text-muted'>{{place.city}},{{place.address}}</p>
+		{% if 'null' != place.web_site_link|default:'null' %}
+		{{place.web_site_link|urlize}}
+		{% endif %}
+		{% for number in  place.phonenumber_set.all %}
+		<p class='card-text'>{{number}}</p>
+		{% empty %}
+		{%endfor%}
+		<p class='card-text'>{{place.description}}</p>
+		<input type='hidden' name='place_subcat' value='{{place.subcategory.id}}'>
+	</div>
+</div>

@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Places:{{city.name}}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+	<div class="cat-list">
+		{% for cat in category_list %}
+		{% if cat.subcategory_set.all %}
+			<a class="btn btn-primary" data-toggle="collapse" href="#cat_fieldset_{{cat.id}}" aria-expanded="false" aria-controls="collapseExample">{{cat.name}}</a>
+		{% endif %}
+		{% endfor %}
+	</div>
+</div>
+<div class='container'>
+	<div class='row'>
+		<div class='col-sm-4'>
+			<form>
+				{% for cat in category_list %}
+				{% if cat.subcategory_set.all  %}
+					<fieldset class='form-group collapse' id='cat_fieldset_{{cat.id}}'>
+					<legend clas>{{cat.name}}</legend>
+					{% for subcat in cat.subcategory_set.all %}
+					<div class='form-check'>
+						<input  class='form-check-input' onchange='hide_subcat({{subcat.id}})'type="checkbox" name="{{subcat.name}}" id='subcat{{subcat.id}}'>
+						<label class='form-check-label' for="subcat{{subcat.id}}">{{subcat.name}}</label>
+					</div>
+					{% endfor %}
+				</fieldset>
+				{% endif %}
+				{% endfor %}
+			</form>
+		</div>
+		<div class='col-sm-8'>
+			<div class='row'id='places-cards'>
+				{% for place in places %}
+				{% include "places/place_card.html" %}
+				{% empty %}
+				<div>No items found </div>
+				{% endfor %}
+			</div>
+		</div>
+		
+	</div>
+</div>
+{% endblock content %}

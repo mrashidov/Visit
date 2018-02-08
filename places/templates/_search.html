@@ -1,0 +1,96 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+	<div class='row'>
+		<div class='col-sm-8'>
+			{% for place in result %}
+			{% include "places/place_card.html" %}
+			{% endfor %}
+		</div>
+		<div class='col-sm-4'>
+			<div id='map' class='card-map'>
+				Map Goes Here
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	// The following example creates complex markers to indicate placees near
+// Sydney, NSW, Australia. Note that the anchor is set to (0,32) to correspond
+// to the base of the flagpole.
+var places =[
+	{% for place in result %}
+		["{{place.name}}", 
+		parseFloat({{place.lat}}), 
+		parseFloat({{place.lng}}),
+		parseInt({{forloop.counter}}),
+		],
+	{%endfor%}
+];
+console.log(places);
+function get_center(arr) {
+	var c_lat, c_lng;
+	c_lat=0;
+	c_lng=0;
+	for (var i = 0; i < arr.length; i++) {
+		c_lat+=arr[i][1];
+		c_lng+=arr[i][2];
+	}
+	return {lat: c_lat/arr.length,lng: c_lng/arr.length};
+}
+console.log(get_center(places));
+function initMap() {
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 10,
+    center: get_center(places),
+  });
+
+  setMarkers(map);
+}
+
+// Data for the markers consisting of a name, a LatLng and a zIndex for the
+// order in which these markers should display on top of each other.
+
+
+function setMarkers(map) {
+  // Adds markers to the map.
+
+  // Marker sizes are expressed as a Size of X,Y where the origin of the image
+  // (0,0) is located in the top left of the image.
+
+  // Origins, anchor positions and coordinates of the marker increase in the X
+  // direction to the right and in the Y direction down.
+  var image = {
+    url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/placeflag.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    size: new google.maps.Size(20, 32),
+    // The origin for this image is (0, 0).
+    origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+    anchor: new google.maps.Point(0, 32)
+  };
+  console.log(image);
+  // Shapes define the clickable region of the icon. The type defines an HTML
+  // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+  // The final coordinate closes the poly by connecting to the first coordinate.
+  var shape = {
+    coords: [1, 1, 1, 20, 18, 20, 18, 1],
+    type: 'poly'
+  };
+  for (var i = 0; i < places.length; i++) {
+    var place = places[i];
+    var marker = new google.maps.Marker({
+      position: {lat: place[1], lng: place[2]},
+      map: map,
+      shape: shape,
+      title: place[0],
+      zIndex: place[3]
+    });
+  }
+}
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCo9jtEkQbMOKqxGHVyBB1RkLox8almUZI&callback=initMap">
+</script>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends "_base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+Places:Home
+{% endblock title %}
+
+{% block content %}
+<div class='content'>
+	
+<div class='index_jumb jumbotron jumbotron-fluid'>
+	<div class='container'>
+		<h1>Places in your city</h1>
+		<p>All places of your city are here.</p>
+		<form method="get" action='{% url 'places:redir' %}'>
+			{{city_form.city}}
+			<input class='btn btn-success form-group-control' type='submit' ></input>
+		</form>
+	</div>
+</div>
+</div>
+{% endblock content %}

@@ -11,7 +11,7 @@ Places Web site powered by Django 2.0
 1. Установим все программы, необходимые для работы проекта
 Windows:
     1. Скачать пакет с Python 3 с официального сайта:
-        - https://www.python.org/download/releases/3.0/
+       https://www.python.org/download/releases/3.0/
     2. Установить согласно инструкции
     3. Скачать и установить MySQL/MariaDB
     4. Скачать и установить NodeJS
@@ -45,5 +45,3 @@ Windows:
     14. Заполните базу данных значениями.
     15. Запустите тестовый сервер:
         >python3 manage.py runserver
-
-Вопросы и помощь предоставляются мной. 
